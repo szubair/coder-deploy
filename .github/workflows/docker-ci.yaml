@@ -27,7 +27,7 @@ jobs:
 
     # Run Trivy Scan
     - name: Run Trivy Vulnerability Scanner
-      uses: aquasecurity/trivy-action@master
+      uses: aquasecurity/trivy-action@0.28.0
       with:
         image-ref: '${{ secrets.DOCKER_USERNAME }}/hello-python:latest'
         format: 'table'
@@ -52,7 +52,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: TEST
-    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
 
     needs: build-and-upload
 
