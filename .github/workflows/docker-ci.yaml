@@ -45,6 +45,10 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
 
+    - name: Show Variable
+      run: |
+        echo "ENABLE_DEPLOY=${{ vars.ENABLE_DEPLOY }}"
+
   deploy:
     if: vars.ENABLE_DEPLOY == 'true'
     runs-on: ubuntu-latest
