@@ -25,6 +25,16 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/hello-python:latest .
 
+    # Run Trivy Scan
+    - name: Run Trivy Vulnerability Scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: '${{ secrets.DOCKER_USERNAME }}/hello-python:latest'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        severity: 'CRITICAL,HIGH'
+
     # Stage 4 - Login to Docker Hub
     - name: Docker Hub Login
       run: |
@@ -36,6 +46,7 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
 
   deploy:
+    if: vars.ENABLE_DEPLOY == 'false'
     runs-on: ubuntu-latest
     environment: TEST
 
