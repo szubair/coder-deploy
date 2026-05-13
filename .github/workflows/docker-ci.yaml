@@ -50,9 +50,9 @@ jobs:
         echo "ENABLE_DEPLOY=${{ vars.ENABLE_DEPLOY }}"
 
   deploy:
-    if: vars.ENABLE_DEPLOY == 'true'
     runs-on: ubuntu-latest
     environment: TEST
+    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
 
     needs: build-and-upload
 
