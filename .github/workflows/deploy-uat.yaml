@@ -2,6 +2,11 @@ name: Deploy Application
 
 on:
   workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag"
+        required: true
+        default: "latest"
 
 jobs:
   deploy:
@@ -15,8 +20,8 @@ jobs:
 
       - name: Pull Latest Image
         run: |
-          docker pull ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/hello-python:${{ github.event.inputs.image_tag }}
 
       - name: Run Application
         run: |
-          docker run --rm ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/hello-python:${{ github.event.inputs.image_tag }}
