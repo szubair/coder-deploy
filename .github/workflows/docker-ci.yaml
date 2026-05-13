@@ -1,0 +1,41 @@
+name: Python Docker CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    # Stage 1 - Checkout
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    # Stage 2 - Verify files
+    - name: List files
+      run: ls -l
+
+    # Stage 3 - Build Docker image
+    - name: Build Docker image
+      run: |
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/hello-python:latest .
+
+    # Stage 4 - Login to Docker Hub
+    - name: Docker Hub Login
+      run: |
+        echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    # Stage 5 - Push image
+    - name: Push Docker image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
+
+    # Stage 6 - Run container
+    - name: Run application container
+      run: |
+        docker run --rm ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
