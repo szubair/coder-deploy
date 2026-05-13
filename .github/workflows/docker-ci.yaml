@@ -46,7 +46,7 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
 
   deploy:
-    if: vars.ENABLE_DEPLOY == 'false'
+    if: vars.ENABLE_DEPLOY == 'true'
     runs-on: ubuntu-latest
     environment: TEST
 
