@@ -9,11 +9,11 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment: TEST
+
 
     steps:
     # Stage 1 - Verify secrets
     - name: Verify variables
-      run: |
-        echo "User=${{ secrets.DOCKER_USERNAME }}"
-        echo "User=${{ secrets.DOCKER_PASSWORD }}"
+      run: echo "User=${{ secrets.DOCKER_USERNAME }}"
 
