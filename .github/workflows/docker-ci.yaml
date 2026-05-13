@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: TEST
 
-
     steps:
-
     # Stage 1 - Checkout
     - name: Checkout source code
       uses: actions/checkout@v4
@@ -37,7 +35,17 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
 
-    # Stage 6 - Run container
-    - name: Run application container
-      run: |
-        docker run --rm ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
+  deploy:
+    runs-on: ubuntu-latest
+    environment: TEST
+
+    needs: build-and-upload
+
+    steps:
+      - name: Pull Latest Image
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
+
+      - name: Run Application
+        run: |
+          docker run --rm ${{ secrets.DOCKER_USERNAME }}/hello-python:latest
